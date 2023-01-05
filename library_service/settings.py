@@ -143,9 +143,9 @@ REST_FRAMEWORK = {
         "rest_framework.throttling.UserRateThrottle",
     ],
     "DEFAULT_THROTTLE_RATES": {
-        "anon": "100/day",
-        "user": "100/day",
-    },  #
+        "anon": "1000/day",
+        "user": "1000/day",
+    },  # change on 100/day
 }
 
 SPECTACULAR_SETTINGS = {
@@ -161,7 +161,7 @@ SPECTACULAR_SETTINGS = {
 }
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),  # default = 5 min  #
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=3000),  # default = 5 min  # change on 5 min
     "REFRESH_TOKEN_LIFETIME": timedelta(days=7),  # default = 1 day
     "ROTATE_REFRESH_TOKENS": True,  # will return also new refresh token  (default = False)
 }
