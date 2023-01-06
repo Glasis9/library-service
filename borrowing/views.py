@@ -1,22 +1,26 @@
 from rest_framework import viewsets
 from rest_framework.pagination import PageNumberPagination
 
+from book.models import Book
 from borrowing.models import Borrowing
 from borrowing.permissions import IsAdminOrIfAuthenticatedReadOnly
-from borrowing.serializers import BorrowingSerializer, BorrowingListSerializer, BorrowingDetailSerializer
+from borrowing.serializers import (
+    BorrowingSerializer,
+    BorrowingListSerializer,
+    BorrowingDetailSerializer,
+)
 
 
-# class BorrowingPagination(PageNumberPagination):
-#     page_size = 2
-#     page_size_query_param = "page_size"
-#     max_page_size = 100
+class BorrowingPagination(PageNumberPagination):
+    page_size = 2
+    page_size_query_param = "page_size"
+    max_page_size = 100
 
 
 class BorrowingViewSet(viewsets.ModelViewSet):
     queryset = Borrowing.objects.all()
     serializer_class = BorrowingSerializer
-    # pagination_class = BorrowingPagination
-
+    pagination_class = BorrowingPagination
     permission_classes = (IsAdminOrIfAuthenticatedReadOnly,)
 
     def get_serializer_class(self):
@@ -33,7 +37,6 @@ class BorrowingViewSet(viewsets.ModelViewSet):
         return [int(str_id) for str_id in qs.split(",")]
 
     def get_queryset(self):
-        """Retrieve the movies with filters"""
         user_id = self.request.query_params.get("user_id")
         is_active = self.request.query_params.get("is_active")
 

@@ -1,14 +1,22 @@
 from drf_spectacular.utils import OpenApiParameter, extend_schema
 from rest_framework import viewsets
+from rest_framework.pagination import PageNumberPagination
 
 from book.models import Book
 from book.permissions import IsAdminOrIfAuthenticatedReadOnly
 from book.serializers import BookSerializer, BookListSerializer
 
 
+class BookPagination(PageNumberPagination):
+    page_size = 1
+    page_size_query_param = "page_size"
+    max_page_size = 100
+
+
 class BookViewSet(viewsets.ModelViewSet):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
+    pagination_class = BookPagination
     permission_classes = (IsAdminOrIfAuthenticatedReadOnly,)
 
     def get_serializer_class(self):
@@ -42,17 +50,17 @@ class BookViewSet(viewsets.ModelViewSet):
             OpenApiParameter(
                 "title",
                 type=str,
-                description="Filter by title (ex. ?title=Test)"
+                description="Filter by title (ex. ?title=Test)",
             ),
             OpenApiParameter(
                 "author",
                 type=str,
-                description="Filter by author (ex. ?author=Test)"
+                description="Filter by author (ex. ?author=Test)",
             ),
             OpenApiParameter(
                 "cover",
                 type=str,
-                description="Filter by cover (ex. ?cover=Hard or Soft)"
+                description="Filter by cover (ex. ?cover=Hard or Soft)",
             ),
         ]
     )
