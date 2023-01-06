@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
+import os
 from datetime import timedelta
 from pathlib import Path
 
@@ -20,9 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = (
-    "django-insecure-*0fh0cw)3y=te!r@o=&n8qpdn=(#n#d5fp8gb_crv#8zzok+k*"
-)
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -161,7 +160,9 @@ SPECTACULAR_SETTINGS = {
 }
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=3000),  # default = 5 min  # change on 5 min
+    "ACCESS_TOKEN_LIFETIME": timedelta(
+        minutes=3000
+    ),  # default = 5 min  # change on 5 min
     "REFRESH_TOKEN_LIFETIME": timedelta(days=7),  # default = 1 day
     "ROTATE_REFRESH_TOKENS": True,  # will return also new refresh token  (default = False)
 }
