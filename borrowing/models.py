@@ -17,3 +17,7 @@ class Borrowing(models.Model):
                f"book: book_id: {self.book_id}. " \
                f"Borrow date: {self.borrow_date}, " \
                f"return date: {self.expected_return_date}"
+
+    # @staticmethod
+    # def complete_borrowing(pk: int):
+    #     queryset = Borrowing.objects.get(id=pk)

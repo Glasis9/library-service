@@ -15,8 +15,10 @@ class Book(models.Model):
 
     def __str__(self) -> str:
         return (
-            f"{self.title} (author: {self.author}), cover: {self.cover}, "
-            f"daily fee: {self.daily_fee_in_usd()}, inventory: {self.inventory} "
+            f"{self.title} (author: {self.author}), "
+            f"cover: {self.cover}, "
+            f"daily fee: {self.daily_fee_in_usd()}, "
+            f"inventory: {self.inventory} "
         )
 
     def daily_fee_in_usd(self):
