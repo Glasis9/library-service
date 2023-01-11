@@ -1,4 +1,3 @@
-import os
 from datetime import date
 
 from django.core.exceptions import ValidationError
@@ -6,7 +5,8 @@ from rest_framework import serializers
 
 from book.models import Book
 from borrowing.models import Borrowing
-from notifiers import get_notifier
+
+from library_service.notification import notification
 
 
 class BorrowingSerializer(serializers.ModelSerializer):
@@ -16,19 +16,15 @@ class BorrowingSerializer(serializers.ModelSerializer):
         queryset.inventory -= 1
         if queryset.inventory >= 0:
             queryset.save()
-            telegram = get_notifier("telegram")
-            telegram.notify(
-                token=os.getenv("token"),
-                chat_id=os.getenv("chatId"),
-                message=f"New borrowing:\n"
-                        f"Borrow date: {date.today()}\n"
-                        f"Expected return date: "
-                        f"{attrs['expected_return_date']}\n"
-                        f"Book id: {attrs['book_id']}, "
-                        f"title: {queryset.title}\n"
-                        f"User id: {self.context['request'].user.id}, "
-                        f"email: {self.context['request'].user}"
-            )
+            message = f"New borrowing:\n" \
+                      f"Borrow date: {date.today()}\n" \
+                      f"Expected return date: " \
+                      f"{attrs['expected_return_date']}\n" \
+                      f"Book id: {attrs['book_id']}, " \
+                      f"title: {queryset.title}\n" \
+                      f"User id: {self.context['request'].user.id}, " \
+                      f"email: {self.context['request'].user}"
+            notification(message)
             return data
         else:
             raise ValidationError("Book not available")
@@ -47,7 +43,6 @@ class BorrowingSerializer(serializers.ModelSerializer):
 
 
 class BorrowingListSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Borrowing
         fields = (
@@ -59,7 +54,10 @@ class BorrowingListSerializer(serializers.ModelSerializer):
             "user_id",
             "is_active",
         )
-        read_only_fields = ("id", "actual_return_date",)
+        read_only_fields = (
+            "id",
+            "actual_return_date",
+        )
 
 
 class BorrowingDetailSerializer(serializers.ModelSerializer):
@@ -70,22 +68,18 @@ class BorrowingDetailSerializer(serializers.ModelSerializer):
             queryset = Book.objects.get(id=book_id)
             queryset.inventory += 1
             queryset.save()
-            telegram = get_notifier("telegram")
-            telegram.notify(
-                token=os.getenv("token"),
-                chat_id=os.getenv("chatId"),
-                message=f"Borrowing complete: id: {self.instance.pk}\n"
-                        f"Borrow date: "
-                        f"{self.instance.borrow_date}\n"
-                        f"Expected return date: "
-                        f"{self.initial_data['expected_return_date']}\n"
-                        f"Actual return date: "
-                        f"{self.initial_data['actual_return_date']}\n"
-                        f"Book id: {book_id}, "
-                        f"title: {queryset.title}\n"
-                        f"User id: {self.context['request'].user.id}, "
-                        f"email: {self.context['request'].user}"
-            )
+            message = f"Borrowing complete: id: {self.instance.pk}\n" \
+                      f"Borrow date: " \
+                      f"{self.instance.borrow_date}\n" \
+                      f"Expected return date: " \
+                      f"{self.initial_data['expected_return_date']}\n" \
+                      f"Actual return date: " \
+                      f"{self.initial_data['actual_return_date']}\n" \
+                      f"Book id: {book_id}, " \
+                      f"title: {queryset.title}\n" \
+                      f"User id: {self.context['request'].user.id}, " \
+                      f"email: {self.context['request'].user}"
+            notification(message)
             return data
 
     class Meta:
@@ -94,5 +88,8 @@ class BorrowingDetailSerializer(serializers.ModelSerializer):
             "id",
             "expected_return_date",
             "actual_return_date",
+            "book_id",
+            "user_id",
             "is_active",
         )
+        read_only_fields = ("id", "book_id", "user_id")
