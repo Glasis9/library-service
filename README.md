@@ -96,9 +96,9 @@ sending push notification in Telegram Bot.
 sending push notification in Telegram Bot
 
 ###
-![Book-Admin](Book-Admin.jpg)
-![Book-User](Book-user.jpg)
-![Borrowing-Admin](Borrowing-Admin.jpg)
-![Borrowing-User](Borrowing-user.jpg)
-![Create task](Create task.jpg)
-![Notification in Telegram Bot](Telegram.jpg)
+![Book-Admin](https://github.com/Glasis9/library-service/blob/main/Book-Admin.jpg)
+![Book-User](https://github.com/Glasis9/library-service/blob/main/Borrowing-user.jpg)
+![Borrowing-Admin](https://github.com/Glasis9/library-service/blob/main/Borrowing-Admin.jpg)
+![Borrowing-User](https://github.com/Glasis9/library-service/blob/main/Borrowing-user.jpg)
+![Create task](https://github.com/Glasis9/library-service/blob/main/Create%20task.jpg)
+![Notification in Telegram Bot](https://github.com/Glasis9/library-service/blob/main/Telegram.jpg)
