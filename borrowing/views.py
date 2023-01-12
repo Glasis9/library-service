@@ -1,10 +1,9 @@
 from drf_spectacular.utils import extend_schema, OpenApiParameter
 from rest_framework import viewsets
 from rest_framework.pagination import PageNumberPagination
-from rest_framework.permissions import IsAuthenticated
-
 
 from borrowing.models import Borrowing
+from borrowing.permissions import IsAdminOrReadAndUpdateOnly
 from borrowing.serializers import (
     BorrowingSerializer,
     BorrowingListSerializer,
@@ -23,7 +22,7 @@ class BorrowingViewSet(viewsets.ModelViewSet):
     serializer_class = BorrowingSerializer
 
     pagination_class = BorrowingPagination
-    permission_classes = [IsAuthenticated, ]
+    permission_classes = (IsAdminOrReadAndUpdateOnly, )
 
     def get_serializer_class(self):
         if self.action in ("list", "retrieve"):
@@ -40,7 +39,7 @@ class BorrowingViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
 
-        if self.request.user.email == "admin@admin.com":
+        if self.request.user.is_staff:
             queryset = self.queryset
         else:
             queryset = self.queryset.filter(user_id=self.request.user.id)

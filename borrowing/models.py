@@ -21,7 +21,3 @@ class Borrowing(models.Model):
             f"Expected return date: {self.expected_return_date}, "
             f"Actual return date: {self.actual_return_date}"
         )
-
-    # @staticmethod
-    # def complete_borrowing(pk: int):
-    #     queryset = Borrowing.objects.get(id=pk)
