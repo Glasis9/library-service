@@ -23,3 +23,6 @@ class Book(models.Model):
 
     def daily_fee_in_usd(self):
         return f"{self.daily_fee}$"
+
+    class Meta:
+        ordering = ["id"]

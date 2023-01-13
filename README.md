@@ -78,19 +78,7 @@ sending push notification in Telegram Bot.
 3. All endpoints should be documented via Swagger.
 
 ### How to run:
-
-[//]: # (- Create venv: `python -m venv venv`)
-[//]: # (- Activate it: `venv\scripts\activate`)
-[//]: # (- Install requirements: `pip install -r requirements.txt`)
-[//]: # (- Create Postgres DB & User)
-
 - Copy .env_sample -> .env and populate with all required data
-
-[//]: # (- Run migrations: `python manage.py migrate`)
-[//]: # (- Run Redis Server: `docker run -d -p 6379:6379 redis`)
-[//]: # (- Run celery worker for task handling: `celery -A rick_and_morty_api worker -l info -P eventlet`)
-[//]: # (- Run celery bear for task scheduling: `celery -A <mymodul> beat -l INFO --scheduler django_celery_beat.schedulers:DatabaseScheduler`)
-
 - `docker-compose up --build`
 - Create admin user & Create schedule for check of overdue borrowings and 
 sending push notification in Telegram Bot

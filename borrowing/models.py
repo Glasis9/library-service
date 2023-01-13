@@ -21,3 +21,6 @@ class Borrowing(models.Model):
             f"Expected return date: {self.expected_return_date}, "
             f"Actual return date: {self.actual_return_date}"
         )
+
+    class Meta:
+        ordering = ["-borrow_date"]
