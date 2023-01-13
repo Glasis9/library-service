@@ -43,6 +43,7 @@ class BorrowingSerializer(serializers.ModelSerializer):
 
 
 class BorrowingListSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Borrowing
         fields = (

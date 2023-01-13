@@ -85,8 +85,12 @@ WSGI_APPLICATION = "library_service.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.getenv("POSTGRES_DB"),
+        "USER": os.getenv("POSTGRES_USER"),
+        "PASSWORD": os.getenv("POSTGRES_PASSWORD"),
+        "HOST": os.getenv("POSTGRES_HOST"),
+        "PORT": os.getenv("POSTGRES_PORT"),
     }
 }
 
@@ -118,7 +122,7 @@ AUTH_USER_MODEL = "user.User"
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "Europe/Kyiv"
+TIME_ZONE = "Europe/Kiev"
 
 USE_I18N = True
 
@@ -146,9 +150,9 @@ REST_FRAMEWORK = {
         "rest_framework.throttling.UserRateThrottle",
     ],
     "DEFAULT_THROTTLE_RATES": {
-        "anon": "1000/day",
-        "user": "1000/day",
-    },  # change on 100/day
+        "anon": "100/day",
+        "user": "100/day",
+    },
 }
 
 SPECTACULAR_SETTINGS = {
@@ -165,9 +169,9 @@ SPECTACULAR_SETTINGS = {
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(
-        minutes=3000
-    ),  # default = 5 min  # change on 5 min
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),  # default = 1 day
+        minutes=5
+    ),  # default = 5 min
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),  # default = 1 day
     "ROTATE_REFRESH_TOKENS": True,  # will return also new refresh token  (default = False)
 }
 
@@ -175,6 +179,6 @@ SIMPLE_JWT = {
 
 CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL")
 CELERY_RESULT_BACKEND = os.getenv("CELERY_RESULT_BACKEND")
-CELERY_TIMEZONE = "Europe/Kyiv"
+CELERY_TIMEZONE = "Europe/Kiev"
 CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = 30 * 60
