@@ -33,7 +33,7 @@ def detail_url(borrowing_id):
 
 class UnauthenticatedBookApiTests(TestCase):
     def setUp(self):
-        self.client = APIClient()  # No authentication
+        self.client = APIClient()
 
     def test_auth_required(self):
         res = self.client.get(BORROWING_URL)
@@ -52,38 +52,38 @@ class UnauthenticatedBookApiTests(TestCase):
 
 class AuthenticatedBookApiTests(TestCase):
     def setUp(self):
-        self.client = APIClient()  # No authentication
+        self.client = APIClient()
         self.user_1 = get_user_model().objects.create_user(
             "test-user-1@user.com",
             "user12345",
         )
-        self.client.force_authenticate(self.user_1)  # Create user_1 and loging
+        self.client.force_authenticate(self.user_1)
 
         self.user_2 = get_user_model().objects.create_user(
             "test-user-2@user.com",
             "user12345",
-        )  # Create user_2
+        )
 
         self.admin = get_user_model().objects.create_user(
             "admin@admin.com",
             "admin12345",
             is_staff=True
-        )  # Create admin-user
+        )
 
     def test_list_book_admin_all_list_user_only_your_own(self):
-        sample_borrowing(user_id=self.user_1.id)  # create borrowing from user_1
-        res_user_1 = self.client.get(BORROWING_URL)  # response for user_1
+        sample_borrowing(user_id=self.user_1.id)
+        res_user_1 = self.client.get(BORROWING_URL)
 
-        self.client.force_authenticate(self.admin)  # login admin
+        self.client.force_authenticate(self.admin)
 
         sample_borrowing(
             user_id=self.admin.id,
             expected_return_date=date.today() + datetime.timedelta(days=1),
             book_id=2
-        )  # create borrowing from admin
-        res_admin = self.client.get(BORROWING_URL)  # response for admin
+        )
+        res_admin = self.client.get(BORROWING_URL)
 
-        self.client.force_authenticate(self.user_1)  # login user_1
+        self.client.force_authenticate(self.user_1)
 
         self.assertNotEqual(res_user_1.data["results"], res_admin.data["results"])
 
@@ -99,7 +99,7 @@ class AuthenticatedBookApiTests(TestCase):
         res_with_filter = self.client.get(BORROWING_URL, {
             "user_id": f"{borrowing_2.user_id}",
             "is_active": f"{borrowing_2.is_active}",
-        })  # Pass the search parameters
+        })
 
         serializer1 = BorrowingListSerializer(borrowing_1)
         serializer2 = BorrowingListSerializer(borrowing_2)

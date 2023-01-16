@@ -62,7 +62,6 @@ class BorrowingViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(user_id=self.request.user.id)
 
-    # Only for documentation purposes
     @extend_schema(
         parameters=[
             OpenApiParameter(
