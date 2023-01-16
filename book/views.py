@@ -44,7 +44,6 @@ class BookViewSet(viewsets.ModelViewSet):
 
         return queryset.distinct()
 
-    # Only for documentation purposes
     @extend_schema(
         parameters=[
             OpenApiParameter(
