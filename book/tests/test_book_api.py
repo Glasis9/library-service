@@ -94,7 +94,7 @@ class AuthenticatedBookApiTests(TestCase):
             "author": f"{book2.author}",
             "title": f"{book2.title}",
             "cover": f"{book2.cover}"
-        })  # Pass the search parameters
+        })
 
         serializer1 = BookListSerializer(book1)
         serializer2 = BookListSerializer(book2)
